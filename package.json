@@ -2,6 +2,7 @@
   "name": "node-starter",
   "version": "0.0.0",
   "scripts": {
+    "start":"node index.js"
     "vercel-build": "npm install && node run index.js"
   },
   "dependencies": {
