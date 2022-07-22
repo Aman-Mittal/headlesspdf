@@ -1,12 +1,14 @@
-// run `node index.js` in the terminal
 
 const express = require("express");
 const puppeteer = require("puppeteer");
 const app = express();
 
 var cnote = ''
+app.set('port', (process.env.PORT || 5000))
+
+
+
 app.get("/pdf", async (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
     res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     const url = 'https://cjdarcl.mywebxpress.com/GUI/Tracking_New1/Website/Track.Aspx?TenantName=cjdarcl&CONSIGNMENT=';
     cnote = req.query.target;
@@ -20,6 +22,8 @@ app.get("/pdf", async (req, res) => {
         waitUntil: "networkidle2"
     });
     
+    
+
     await webPage.evaluate(_ => {
         // Capture all links that start with javascript on the href property
         // and change it to # instead.
@@ -32,8 +36,8 @@ app.get("/pdf", async (req, res) => {
      //await webPage.emulateMediaType('screen')
 
     const pdf = await webPage.pdf({
-        format: "A4",
-        landscape:true
+        format: "A2",
+        pageRanges: '1'
     });
    
     await browser.close();
@@ -42,7 +46,7 @@ app.get("/pdf", async (req, res) => {
     res.send(pdf);
 })
 
-app.listen(3000, () => {
+app.listen(app.get('port'), () => {
     console.log("Server started");
+    console.log("Node app is running at localhost:" + app.get('port'))
 });
-console.log(`Hello Node.js v${process.versions.node}!`);
