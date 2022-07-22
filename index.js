@@ -6,6 +6,8 @@ const app = express();
 
 var cnote = ''
 app.get("/pdf", async (req, res) => {
+    res.setHeader('Content-Type', 'text/html');
+    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
     const url = 'https://cjdarcl.mywebxpress.com/GUI/Tracking_New1/Website/Track.Aspx?TenantName=cjdarcl&CONSIGNMENT=';
     cnote = req.query.target;
     const browser = await puppeteer.launch({
